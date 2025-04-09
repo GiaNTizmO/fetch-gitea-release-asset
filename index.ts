@@ -84,6 +84,7 @@ const baseFetchAssetFile = async (
       },
     }
   );
+  console.log('GET ' + giteaDownloadUrl)
   let headers: HeadersInit = {
     accept,
   };
