@@ -64,11 +64,12 @@ interface FetchAssetFileOptions {
   readonly owner: string;
   readonly repo: string;
   readonly token: string;
+  readonly giteaDownloadUrl: string;
 }
 
 const baseFetchAssetFile = async (
   octokit: ReturnType<typeof github.getOctokit>,
-  { id, outputPath, owner, repo, token }: FetchAssetFileOptions
+  { outputPath, token, giteaDownloadUrl }: FetchAssetFileOptions
 ) => {
   const {
     body,
@@ -76,14 +77,11 @@ const baseFetchAssetFile = async (
     method,
     url,
   } = octokit.request.endpoint(
-    'GET /repos/:owner/:repo/releases/assets/:asset_id',
+    'GET ' + giteaDownloadUrl,
     {
-      asset_id: id,
       headers: {
         accept: 'application/octet-stream',
       },
-      owner,
-      repo,
     }
   );
   let headers: HeadersInit = {
@@ -158,6 +156,7 @@ const main = async (): Promise<void> => {
       owner,
       repo,
       token,
+      giteaDownloadUrl: asset.browser_download_url,
     });
   }
   printOutput(release);

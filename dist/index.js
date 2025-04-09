@@ -700,9 +700,9 @@ var require_file_command = __commonJS({
   }
 });
 
-// node_modules/@actions/core/node_modules/@actions/http-client/lib/proxy.js
+// node_modules/@actions/http-client/lib/proxy.js
 var require_proxy = __commonJS({
-  "node_modules/@actions/core/node_modules/@actions/http-client/lib/proxy.js"(exports) {
+  "node_modules/@actions/http-client/lib/proxy.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.checkBypass = exports.getProxyUrl = void 0;
@@ -986,9 +986,9 @@ var require_tunnel2 = __commonJS({
   }
 });
 
-// node_modules/@actions/core/node_modules/@actions/http-client/lib/index.js
+// node_modules/@actions/http-client/lib/index.js
 var require_lib = __commonJS({
-  "node_modules/@actions/core/node_modules/@actions/http-client/lib/index.js"(exports) {
+  "node_modules/@actions/http-client/lib/index.js"(exports) {
     "use strict";
     var __createBinding = exports && exports.__createBinding || (Object.create ? function(o, m2, k, k2) {
       if (k2 === void 0)
@@ -1538,9 +1538,9 @@ var require_lib = __commonJS({
   }
 });
 
-// node_modules/@actions/core/node_modules/@actions/http-client/lib/auth.js
+// node_modules/@actions/http-client/lib/auth.js
 var require_auth = __commonJS({
-  "node_modules/@actions/core/node_modules/@actions/http-client/lib/auth.js"(exports) {
+  "node_modules/@actions/http-client/lib/auth.js"(exports) {
     "use strict";
     var __awaiter = exports && exports.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
@@ -2232,9 +2232,9 @@ var require_context = __commonJS({
   }
 });
 
-// node_modules/@actions/http-client/proxy.js
+// node_modules/@actions/github/node_modules/@actions/http-client/proxy.js
 var require_proxy2 = __commonJS({
-  "node_modules/@actions/http-client/proxy.js"(exports) {
+  "node_modules/@actions/github/node_modules/@actions/http-client/proxy.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     function getProxyUrl(reqUrl) {
@@ -2286,9 +2286,9 @@ var require_proxy2 = __commonJS({
   }
 });
 
-// node_modules/@actions/http-client/index.js
+// node_modules/@actions/github/node_modules/@actions/http-client/index.js
 var require_http_client = __commonJS({
-  "node_modules/@actions/http-client/index.js"(exports) {
+  "node_modules/@actions/github/node_modules/@actions/http-client/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var http3 = require("http");
@@ -13809,19 +13809,16 @@ var getRelease = (octokit, { owner, repo, version }) => {
     });
   }
 };
-var baseFetchAssetFile = async (octokit, { id, outputPath, owner, repo, token }) => {
+var baseFetchAssetFile = async (octokit, { outputPath, token, giteaDownloadUrl }) => {
   const {
     body,
     headers: { accept, "user-agent": userAgent },
     method,
     url
-  } = octokit.request.endpoint("GET /repos/:owner/:repo/releases/assets/:asset_id", {
-    asset_id: id,
+  } = octokit.request.endpoint("GET " + giteaDownloadUrl, {
     headers: {
       accept: "application/octet-stream"
-    },
-    owner,
-    repo
+    }
   });
   let headers = {
     accept
@@ -13873,7 +13870,8 @@ var main = async () => {
       outputPath: usesRegex ? `${target}${asset.name}` : target,
       owner,
       repo,
-      token
+      token,
+      giteaDownloadUrl: asset.browser_download_url
     });
   }
   printOutput(release);
